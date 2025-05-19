@@ -1,83 +1,34 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Contact.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddias-fe <ddias-fe@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 14:17:31 by ddias-fe          #+#    #+#             */
-/*   Updated: 2025/02/27 15:44:24 by ddias-fe         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Contact.hpp"
 
-Contact::Contact()
-{
+void Contact::setInfo() {
+    std::cout << "First Name: ";
+    std::getline(std::cin, firstName);
+    std::cout << "Last Name: ";
+    std::getline(std::cin, lastName);
+    std::cout << "Nickname: ";
+    std::getline(std::cin, nickname);
+    std::cout << "Phone Number: ";
+    std::getline(std::cin, phoneNumber);
+    std::cout << "Darkest Secret: ";
+    std::getline(std::cin, darkestSecret);
 }
 
-Contact::~Contact()
-{
+std::string truncate(std::string str) {
+    return (str.length() > 10 ? str.substr(0, 9) + "." : str);
 }
 
-void Contact::SetIndex(int index)
-{
-	_index = index;
+void Contact::showShortInfo(int index) {
+    std::cout << std::setw(10) << index << "|"
+              << std::setw(10) << truncate(firstName) << "|"
+              << std::setw(10) << truncate(lastName)  << "|"
+              << std::setw(10) << truncate(nickname)  << "|"
+              << "\n";
 }
 
-void Contact::SetFirstName(std::string firstName)
-{
-	_firstName = firstName;
-}
-
-void Contact::SetLastName(std::string lastName)
-{
-	_lastName = lastName;
-}
-
-void Contact::SetNickname(std::string nickname)
-{
-	_nickname = nickname;
-}
-
-void Contact::SetPhoneNumber(std::string phoneNumber)
-{
-	_phoneNumber = phoneNumber;
-}
-
-void Contact::SetDarkestSecret(std::string darkestSecret)
-{
-	_darkestSecret = darkestSecret;
-}
-
-void Contact::PrintIndex(PrintType type)
-{
-	if (type == ShortType)
-		std::cout << std::setw(10) << _index << " | ";
-	else
-		std::cout << _index << std::endl;
-}
-
-void Contact::PrintFirstName(PrintType type)
-{
-	if (type == ShortType)
-		std::cout << std::setw(10) << _firstName << " | ";
-	else
-		std::cout << _firstName << std::endl;
-}
-
-void Contact::PrintLastName(PrintType type)
-{
-	if (type == ShortType)
-		std::cout << std::setw(10) << _lastName << " | ";
-	else
-		std::cout << _lastName << std::endl;
-}
-
-void Contact::PrintNickname(PrintType type)
-{
-	if (type == ShortType)
-		std::cout << std::setw(10) << _nickname << std::endl;
-	else
-		std::cout << _nickname << std::endl;
+void Contact::showFullInfo() {
+    std::cout   <<	"First Name: "		<<	firstName		<<	"\n"
+                <<	"Last Name: "		<<	lastName		<<	"\n"
+                <<	"Nickname: "		<<	nickname		<<	"\n"
+				<<	"Phone Number: "	<<	phoneNumber		<<	"\n"
+				<<	"Darkest Secret: "	<<	darkestSecret	<<	"\n";
 }
