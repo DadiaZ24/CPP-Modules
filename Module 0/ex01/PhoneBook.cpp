@@ -28,6 +28,7 @@ void PhoneBook::searchContact() {
         std::cin.clear();
         std::cout << "Invalid index. The index should be between 0 and " << totalContacts << "\n";
         return;
+        
     }
 
     std::cin.ignore();
