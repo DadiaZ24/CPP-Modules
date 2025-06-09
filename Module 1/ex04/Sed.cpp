@@ -4,6 +4,10 @@ Sed::Sed(std::string filename, std::string s1, std::string s2) : filename(filena
 
 void Sed::replace(std::ifstream &infile, std::ofstream &outfile)
 {
+    if (s1.empty()) {
+        std::cerr << "Error: the string to replace can't be empty!\n";
+        return;
+    }
     // Read the file
     std::string line;
     while (std::getline(infile, line))
