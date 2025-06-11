@@ -53,7 +53,7 @@ float Fixed::toFloat() const
 
 int Fixed::toInt() const
 {
-    return _rawValue >> _fracBits;
+    return roundf(Fixed::toFloat());
 }
 
 std::ostream &operator<<(std::ostream &out, const Fixed &fixed)
