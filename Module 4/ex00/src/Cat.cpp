@@ -7,8 +7,7 @@ Cat::Cat() {
 
 Cat::Cat(const Cat& other) : Animal(other) {
     std::cout << CLASS_CALL << "[CLASS CALL] " << RESET << "Cat copy constructor called" << std::endl;
-    if (this != &other)
-        this->type = other.type;
+    *this = other;
 }
 
 Cat& Cat::operator=(const Cat& other) {
