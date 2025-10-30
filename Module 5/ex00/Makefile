@@ -1,5 +1,5 @@
-SRC = main.cpp src/Bureaucrat.cpp
-NAME = Bureaucrat
+SRC = main.cpp src/Bureaucrat.cpp src/Cat.cpp src/WrongAnimal.cpp src/WrongCat.cpp
+NAME = animal
 
 CC = c++ -Wall -Werror -Wextra -std=c++98 -g
 
