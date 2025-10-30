@@ -29,7 +29,7 @@ class Form {
         bool getIsSigned() const;
         int getGradeToSign() const;
         int getGradeToExecute() const;
-        void beSigned(Bureaucrat bureaucrat);
+        void beSigned(const Bureaucrat& bureaucrat);
 
         class GradeTooHighException : public std::exception {
             public:
@@ -40,6 +40,8 @@ class Form {
             public:
                 const char *what() const throw();
         };
-};
 
+    };
+    
+std::ostream &operator<<(std::ostream &out, const Form &form);
 #endif

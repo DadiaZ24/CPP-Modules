@@ -1,53 +1,54 @@
+#include <iostream>
 #include "includes/Bureaucrat.hpp"
+#include "includes/Form.hpp"
 
-int main() {
-    std::cout << "== Basic operations ===" << std::endl;
+int main()
+{
+    std::cout << "=== Form & Bureaucrat Tests ===" << std::endl;
+
+    try
+    {
+        Bureaucrat bob("Bob", 9);
+        Bureaucrat alice("Alice", 80);
+        Bureaucrat tom("Tom", 150);
+
+        std::cout << "\nCreating valid forms..." << std::endl;
+        Form taxForm("Tax Declaration", 75, 100);
+        Form topSecret("Top Secret Document", 10, 5);
+
+        std::cout << "\n--- Form info ---" << std::endl;
+        std::cout << taxForm << std::endl;
+        std::cout << topSecret << std::endl;
+
+        std::cout << "\n--- Signing tests ---" << std::endl;
+        taxForm.beSigned(bob);
+        taxForm.beSigned(alice);
+        topSecret.beSigned(bob);
+        topSecret.beSigned(alice);
+
+        std::cout << "\n--- Final forms state ---" << std::endl;
+        std::cout << taxForm << std::endl;
+        std::cout << topSecret << std::endl;
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << "Unexpected exception: " << e.what() << std::endl;
+    }
+
+    std::cout << "\n=== Testing invalid forms ===" << std::endl;
+
     try {
-        Bureaucrat ObiWan("ObiWan Kenobi", 2);
-        std::cout << ObiWan << std::endl;
-        ObiWan.incrementGrade();
-        std::cout << "after increment -> " << ObiWan << std::endl;
-        ObiWan.incrementGrade();
-        std::cout << "after increment again -> " << ObiWan << std::endl;
-
-    }
-    catch (std::exception &e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        Form invalidHigh("InvalidHigh", 0, 50);
+    } catch (std::exception &e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Invalid constructions ===\n";
-    try
-    {
-        Bureaucrat DarthVader("DarthVader", 0);
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << "DarthVader construction failed: " << e.what() << std::endl;
+    try {
+        Form invalidLow("InvalidLow", 200, 50);
+    } catch (std::exception &e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
     }
 
-    try
-    {
-        Bureaucrat Luke("Luke", 151);
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << "Luke construction failed: " << e.what() << std::endl;
-    }
-
-    std::cout << "\n=== Decrement to too low ===\n";
-    try
-    {
-        Bureaucrat BB8("BB8", 149);
-        std::cout << BB8 << std::endl;
-        BB8.decrementGrade();
-        std::cout << "after decrement: " << BB8 << std::endl;
-        BB8.decrementGrade();
-        std::cout << "after second decrement: " << BB8 << std::endl;
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << "Exception: " << e.what() << std::endl;
-    }
-
+    std::cout << "\n=== End of tests ===" << std::endl;
     return 0;
 }
