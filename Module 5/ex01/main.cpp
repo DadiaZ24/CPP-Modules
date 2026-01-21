@@ -8,13 +8,13 @@ int main()
 
     try
     {
-        Bureaucrat bob("Bob", 9);
+        Bureaucrat bob("Bob", 1);
         Bureaucrat alice("Alice", 80);
         Bureaucrat tom("Tom", 150);
 
         std::cout << "\nCreating valid forms..." << std::endl;
         Form taxForm("Tax Declaration", 75, 100);
-        Form topSecret("Top Secret Document", 10, 5);
+        Form topSecret("Top Secret Document", 1, 5);
 
         std::cout << "\n--- Form info ---" << std::endl;
         std::cout << taxForm << std::endl;

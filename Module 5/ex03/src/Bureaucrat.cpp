@@ -80,7 +80,21 @@ std::ostream &operator<<(std::ostream &out, const Bureaucrat &bureaucrat)
     return out;
 }
 
-void Bureaucrat::signForm(Form &form)
+void Bureaucrat::signForm(AForm &form)
 {
     form.beSigned(*this);
+}
+
+void Bureaucrat::executeForm(AForm const &form)
+{
+    try
+    {
+        form.execute(*this);
+        std::cout << name << " executed " << form.getName() << std::endl;
+    }
+    catch (std::exception &ex)
+    {
+        std::cout << this->getName() << " couldn't execute " << form.getName()
+                  << " because " << ex.what() << std::endl;
+    }
 }

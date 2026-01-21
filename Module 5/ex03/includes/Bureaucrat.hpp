@@ -10,7 +10,9 @@
 
 #include <iostream>
 #include <string>
-#include "Form.hpp"
+#include "AForm.hpp"
+
+class AForm;
 
 class Bureaucrat
 {
@@ -27,10 +29,11 @@ public:
 
     std::string getName() const;
     int getGrade() const;
+    void signForm(AForm &form);
+    void executeForm(AForm const &form);
 
     void incrementGrade();
     void decrementGrade();
-    void signForm(Form &form);
 
     class GradeTooHighException : public std::exception
     {
