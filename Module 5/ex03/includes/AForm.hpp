@@ -59,6 +59,12 @@ public:
         const char *what() const throw();
     };
 
+    class FormCreationException : public std::exception
+    {
+    public:
+        const char *what() const throw();
+    };
+
     virtual void execute(Bureaucrat const &executor) const = 0;
 };
 

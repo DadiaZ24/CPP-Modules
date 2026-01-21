@@ -93,6 +93,11 @@ const char *AForm::GradeToExecuteTooLowException::what() const throw()
     return "The grade of the executor is not high enough to execute the form";
 }
 
+const char *AForm::FormCreationException::what() const throw()
+{
+    return "The Form you are trying to create does not exist";
+}
+
 std::ostream &operator<<(std::ostream &out, const AForm &form)
 {
     out << form.getName()

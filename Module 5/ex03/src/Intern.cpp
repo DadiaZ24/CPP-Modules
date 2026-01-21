@@ -25,7 +25,23 @@ Intern &Intern::operator=(const Intern &)
     return *this;
 }
 
-AForm *Intern::makeForm(const std::string &formName, const std::string &target)
+AForm *createShrubbery(const std::string &target)
+{
+    return new ShrubberyCreationForm(target);
+}
+
+AForm *createRobotomy(const std::string &target)
+{
+    return new RobotomyRequestForm(target);
+}
+
+AForm *createPresidential(const std::string &target)
+{
+    return new PresidentialPardonForm(target);
+}
+
+AForm *
+Intern::makeForm(const std::string &formName, const std::string &target)
 {
     struct FormStruct
     {
@@ -34,14 +50,11 @@ AForm *Intern::makeForm(const std::string &formName, const std::string &target)
     };
 
     static const FormStruct forms[] = {
-        {"shrubbery creation", [](const std::string &t)
-         { return static_cast<AForm *>(new ShrubberyCreationForm(t)); }},
-        {"robotomy request", [](const std::string &t)
-         { return static_cast<AForm *>(new RobotomyRequestForm(t)); }},
-        {"presidential pardon", [](const std::string &t)
-         { return static_cast<AForm *>(new PresidentialPardonForm(t)); }}};
+        {"shrubbery creation", createShrubbery},
+        {"robotomy request", createRobotomy},
+        {"presidential pardon", createPresidential}};
 
-    for (int i = 0; i < sizeof(forms) / sizeof(forms[0]); ++i)
+    for (int i = 0; i < 3; ++i)
     {
         if (formName == forms[i].name)
         {
@@ -50,5 +63,5 @@ AForm *Intern::makeForm(const std::string &formName, const std::string &target)
         }
     }
     std::cout << "Intern: Error! Form name '" << formName << "' does not exist." << std::endl;
-    return nullptr;
+    throw AForm::FormCreationException();
 }

@@ -1,5 +1,5 @@
 SRC = main.cpp src/Bureaucrat.cpp src/AForm.cpp src/ShrubberyCreationForm.cpp src/RobotomyRequestForm.cpp src/PresidentialPardonForm.cpp
-NAME = Bureaucrat
+NAME = Forms
 
 CC = c++ -Wall -Werror -Wextra -std=c++98 -g
 
