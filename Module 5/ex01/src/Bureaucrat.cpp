@@ -1,4 +1,5 @@
 #include "../includes/Bureaucrat.hpp"
+#include "../includes/Form.hpp"
 
 Bureaucrat::Bureaucrat() : name("default"), grade(150)
 {
@@ -82,5 +83,13 @@ std::ostream &operator<<(std::ostream &out, const Bureaucrat &bureaucrat)
 
 void Bureaucrat::signForm(Form &form)
 {
-    form.beSigned(*this);
+    try
+    {
+        form.beSigned(*this);
+        std::cout << name << " signed " << form.getName() << std::endl;
+    }
+    catch (std::exception &e)
+    {
+        std::cout << name << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
+    }
 }

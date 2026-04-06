@@ -1,4 +1,5 @@
 #include "../includes/Form.hpp"
+#include "../includes/Bureaucrat.hpp"
 
 Form::Form() : _name("default"), _isSigned(false), _gradeToSign(1), _gradeToExecute(1) {
     std::cout << CLASS_CALL << "[CLASS CALL] " << RESET << "Form constructor called" << std::endl;
@@ -54,11 +55,8 @@ int Form::getGradeToExecute() const {
 
 void Form::beSigned(const Bureaucrat& bureaucrat) {
     if (bureaucrat.getGrade() > _gradeToSign)
-        std::cout << bureaucrat.getName() << " couldn't sign " << _name << " because is grade is too low." << std::endl;
-    else {
-        _isSigned = true;
-        std::cout << bureaucrat.getName() << " signed " << _name << std::endl;
-    }
+        throw Form::GradeTooLowException();
+    _isSigned = true;
 }
 
 const char *Form::GradeTooHighException::what() const throw() {
