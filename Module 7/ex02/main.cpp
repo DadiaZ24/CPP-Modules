@@ -2,7 +2,7 @@
 #include <string>
 #include "Array.hpp"
 
-int main( void )
+int main()
 {
     std::cout << "=== Default construction ===" << std::endl;
     Array<int> empty;

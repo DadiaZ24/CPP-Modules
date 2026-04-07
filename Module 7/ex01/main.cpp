@@ -22,7 +22,7 @@ void toUpper(char &c)
 
 // --- Tests ---
 
-int main( void )
+int main()
 {
     std::cout << "=== int array (print) ===" << std::endl;
     int ints[] = {1, 2, 3, 4, 5};
