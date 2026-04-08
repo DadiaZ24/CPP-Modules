@@ -38,13 +38,14 @@ class ScalarConverter {
         static bool isDouble(const std::string &str);
         static bool isPseudo(const std::string &str);
 
-        static void printChar(double value, bool impossible);
-        static void printInt(double value, bool impossible);
-        static void printFloat(double value, bool isPseudo);
-        static void printDouble(double value, bool isPseudo);
+        static bool ftIsNan(const std::string &str);
+        static bool ftIsInf(const std::string &str);
 
-        static bool ftIsNan(double value);
-        static bool ftIsInf(double value);
+        static void printChar(const std::string &str, Type type);
+        static void printInt(const std::string &str, Type type);
+        static void printFloat(const std::string &str, Type type);
+        static void printDouble(const std::string &str, Type type);
+
     public:
         static void convert(const std::string& literal);
 };

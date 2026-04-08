@@ -99,128 +99,141 @@ ScalarConverter::Type ScalarConverter::detectType(const std::string &str) {
     return INVALID;
 }
 
-bool ScalarConverter::ftIsNan(double value) {
-    return value != value;
+bool ScalarConverter::ftIsNan(const std::string &str) {
+    return (str == "nan" || str == "nanf");
 }
 
-bool ScalarConverter::ftIsInf(double value) {
-    return (value > std::numeric_limits<double>::max() || value < -std::numeric_limits<double>::max());
+bool ScalarConverter::ftIsInf(const std::string &str) {
+    return (str == "inf" || str == "+inf" || str == "-inf"
+         || str == "inff" || str == "+inff" || str == "-inff");
 }
 
-void ScalarConverter::printChar(double value, bool impossible) {
+void ScalarConverter::printChar(const std::string &str, Type type) {
     std::cout << "char: ";
-    if (impossible || ftIsNan(value) || ftIsInf(value) || value < 0 || value > 127)
+    if (ftIsNan(str) || ftIsInf(str)) {
         std::cout << "impossible" << std::endl;
-    else if (!std::isprint(static_cast<int>(value)))
+        return;
+    }
+    long val;
+    if (type == CHAR)
+        val = static_cast<long>(str[0]);
+    else if (type == INT)
+        val = std::strtol(str.c_str(), NULL, 10);
+    else if (type == FLOAT) {
+        std::string fs = str.substr(0, str.length() - 1);
+        val = static_cast<long>(std::strtof(fs.c_str(), NULL));
+    }
+    else
+        val = static_cast<long>(std::strtod(str.c_str(), NULL));
+
+    if (val < 0 || val > 127) {
+        std::cout << "impossible" << std::endl;
+        return;
+    }
+    if (!std::isprint(static_cast<int>(val)))
         std::cout << "Non displayable" << std::endl;
     else
-        std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
+        std::cout << "'" << static_cast<char>(val) << "'" << std::endl;
 }
 
-void ScalarConverter::printInt(double value, bool impossible) {
+void ScalarConverter::printInt(const std::string &str, Type type) {
     std::cout << "int: ";
-    if (impossible || ftIsNan(value) || ftIsInf(value) || value < static_cast<double>(INT_MIN) || value > static_cast<double>(INT_MAX))
+    if (ftIsNan(str) || ftIsInf(str)) {
         std::cout << "impossible" << std::endl;
-    else
-        std::cout << static_cast<int>(value) << std::endl;
-}
-
-void ScalarConverter::printFloat(double value, bool isPseudo) {
-    std::cout << "float: ";
-    float floatValue = static_cast<float>(value);
-    if (isPseudo || ftIsNan(value) || ftIsInf(value)) {
-        if (ftIsNan(value))
-            std::cout << "nanf" << std::endl;
-        else if (value > 0)
-            std::cout << "+inff" << std::endl;
-        else
-            std::cout << "-inff" << std::endl;
+        return;
+    }
+    long val;
+    if (type == CHAR)
+        val = static_cast<long>(str[0]);
+    else if (type == INT) {
+        char *end;
+        val = std::strtol(str.c_str(), &end, 10);
+        if (*end != '\0' || val > INT_MAX || val < INT_MIN) {
+            std::cout << "impossible" << std::endl;
+            return;
+        }
+    }
+    else if (type == FLOAT) {
+        std::string fs = str.substr(0, str.length() - 1);
+        float fval = std::strtof(fs.c_str(), NULL);
+        if (fval > static_cast<float>(INT_MAX) || fval < static_cast<float>(INT_MIN)) {
+            std::cout << "impossible" << std::endl;
+            return;
+        }
+        val = static_cast<long>(fval);
     }
     else {
-        std::cout << std::fixed << std::setprecision(1) << floatValue << "f" << std::endl;
+        double dval = std::strtod(str.c_str(), NULL);
+        if (dval > static_cast<double>(INT_MAX) || dval < static_cast<double>(INT_MIN)) {
+            std::cout << "impossible" << std::endl;
+            return;
+        }
+        val = static_cast<long>(dval);
     }
+    std::cout << static_cast<int>(val) << std::endl;
 }
 
-void ScalarConverter::printDouble(double value, bool isPseudo) {
-	std::cout << "double: ";
-	if (isPseudo || ftIsNan(value) || ftIsInf(value)) {
-		if (ftIsNan(value))
-			std::cout << "nan" << std::endl;
-		else if (value > 0)
-			std::cout << "+inf" << std::endl;
-		else
-			std::cout << "-inf" << std::endl;
-	}
-	else {
-		std::cout << std::fixed << std::setprecision(1) << value << std::endl;
-	}
+void ScalarConverter::printFloat(const std::string &str, Type type) {
+    std::cout << "float: ";
+    if (ftIsNan(str)) {
+        std::cout << "nanf" << std::endl;
+        return;
+    }
+    if (ftIsInf(str)) {
+        std::cout << (str[0] == '-' ? "-inff" : "+inff") << std::endl;
+        return;
+    }
+    float val;
+    if (type == CHAR)
+        val = static_cast<float>(str[0]);
+    else if (type == INT)
+        val = static_cast<float>(std::strtol(str.c_str(), NULL, 10));
+    else if (type == FLOAT) {
+        std::string fs = str.substr(0, str.length() - 1);
+        val = std::strtof(fs.c_str(), NULL);
+    }
+    else
+        val = static_cast<float>(std::strtod(str.c_str(), NULL));
+    std::cout << std::fixed << std::setprecision(1) << val << "f" << std::endl;
+}
+
+void ScalarConverter::printDouble(const std::string &str, Type type) {
+    std::cout << "double: ";
+    if (ftIsNan(str)) {
+        std::cout << "nan" << std::endl;
+        return;
+    }
+    if (ftIsInf(str)) {
+        std::cout << (str[0] == '-' ? "-inf" : "+inf") << std::endl;
+        return;
+    }
+    double val;
+    if (type == CHAR)
+        val = static_cast<double>(str[0]);
+    else if (type == INT)
+        val = static_cast<double>(std::strtol(str.c_str(), NULL, 10));
+    else if (type == FLOAT) {
+        std::string fs = str.substr(0, str.length() - 1);
+        val = static_cast<double>(std::strtof(fs.c_str(), NULL));
+    }
+    else
+        val = std::strtod(str.c_str(), NULL);
+    std::cout << std::fixed << std::setprecision(1) << val << std::endl;
 }
 
 void ScalarConverter::convert(const std::string &str) {
     Type type = detectType(str);
-    double value = 0;
-    bool impossible = false;
 
-    switch (type)
-    {
-        case CHAR:
-        {
-            value = static_cast<double>(str[0]);
-            break;
-        }
-        
-        case INT:
-        {
-            char *end;
-            long val = std::strtol(str.c_str(), &end, 10);
-            if (*end != '\0' || val > INT_MAX || val < INT_MIN)
-                impossible = true;
-            value = static_cast<double>(val);
-            break;
-        }
-        
-        case FLOAT:
-        {
-            std::string floatString = str.substr(0, str.length() - 1);
-            char *end;
-            value = std::strtod(floatString.c_str(), &end);
-            if (*end != '\0')
-                impossible = true;
-            break;
-        }
+    if (type == INVALID) {
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+        std::cout << "float: impossible" << std::endl;
+        std::cout << "double: impossible" << std::endl;
+        return;
+    }
 
-        case DOUBLE:
-        {
-            char *end;
-            value = std::strtod(str.c_str(), &end);
-            if (*end != '\0')
-                impossible = true;
-            break;
-        }
-
-        case PSEUDO:
-        {
-            if (str == "nan" || str == "nanf")
-                value = std::numeric_limits<double>::quiet_NaN();
-            else if (str == "+inf" || str == "+inff"
-				|| str == "inf" || str == "inff")
-				value = std::numeric_limits<double>::infinity();
-			else
-				value = -std::numeric_limits<double>::infinity();
-			break;
-		}
- 
-		case INVALID:
-			std::cout << "char: impossible" << std::endl;
-			std::cout << "int: impossible" << std::endl;
-			std::cout << "float: impossible" << std::endl;
-			std::cout << "double: impossible" << std::endl;
-			return;
-	}
- 
-	bool pseudo = (type == PSEUDO);
-	printChar(value, impossible);
-	printInt(value, impossible);
-	printFloat(value, pseudo);
-	printDouble(value, pseudo);
+    printChar(str, type);
+    printInt(str, type);
+    printFloat(str, type);
+    printDouble(str, type);
 }
