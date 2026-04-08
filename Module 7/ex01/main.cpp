@@ -20,8 +20,6 @@ void toUpper(char &c)
         c = c - 32;
 }
 
-// --- Tests ---
-
 int main()
 {
     std::cout << "=== int array (print) ===" << std::endl;
